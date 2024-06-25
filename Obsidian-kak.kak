@@ -47,8 +47,24 @@ define-command -params 1 -docstring "Paste most recenly saved image to end of th
     }
 }
 
+define-command -docstring "Open this vault in the Obsidian app" open-obsidian %{
+	evaluate-commands %sh{
+		vaultName = $(basename "$PWD")
+		xdg-open 'obsidian://open?vault='$vaultName''
+    }
+}
+
+define-command -params 1 -docstring "This command makes all links not yet in the vault into markdown files" create-all-mds  %{
+	evaluate-commands %sh{
+		~/.config/kak/plugins/Obsidian-kak/main $PWD "$1"
+		done
+    }
+}
+
 map global user n :is-obsidian-vault<ret>
 map global user n :current-dir<ret>
 map global user n :open-note<ret>
 map global user n :change-link-color<ret>
 map global user n :paste-img<ret>
+map global user n :open-obsidian<ret>
+map global user n :quick-switch<ret>
