@@ -57,7 +57,13 @@ define-command -docstring "Open this vault in the Obsidian app" open-obsidian %{
 define-command -params 1 -docstring "This command makes all links not yet in the vault into markdown files" create-all-mds  %{
 	evaluate-commands %sh{
 		~/.config/kak/plugins/Obsidian-kak/main $PWD "$1"
-		done
+    }
+}
+
+define-command -params 2 -docstring "" move-note %{
+	evaluate-commands %sh{
+		mv "$PWD/$1" "$PWD/$2"
+		echo "echo -markup moved file: $PWD/$1 to $PWD/$2"
     }
 }
 

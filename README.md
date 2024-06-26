@@ -22,8 +22,10 @@ source ~/.config/kak/plugins/Obsidian-kak/Obsidian-kak.kak do sh%{
 	- Example use: ```:open-note CookieRecipe```
 - ```:paste-img [FILE]```: puts most recently saved image into the markdown file defined in the arguement (make sure all images are saved in a directory named "assets")
 	- Example use: ```:paste-img 'CookieRecipe.md'```
-- ```:create-all-mds [TITLE]```: this command finds out if all of the links in the given note is a file in the vault, if it is not the file will be created
+- ```:create-all-mds [FILE]```: this command finds out if all of the links in the given note is a file in the vault, if it is not the file will be created
 	- Example use: ```:create-all-mds 'CookieRecipe.md'```
 - ```:open-obsidian```: opens the currently opened vault in Obsidian
+- ```:move-note [FILE] [DIRECTORY]```: Moves the file (given by argument 1) to a directory (given by argument 2)
+	- Example use: ```:move-note 'CookieRecipe.md' 'All Recipes/'```
 
 There is more to come, I am not close to being done developing this.

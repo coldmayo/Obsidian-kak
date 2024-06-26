@@ -47,12 +47,23 @@ int listFiles(char * pth, char *fToFind) {
 	return found;
 }
 
+char * slice_str(char *str, char * buffer, int start, int end) {
+	int j = 0;
+	for (int i = start; i <= end && str[i] != '\0'; ++i) {
+		buffer[j++] = str[i];
+	}
+	buffer[j] = '\0';
+	return buffer;
+}
+
 int main (int argc, char *argv[]) {
 
-	char connects[20][20] = {};
+	char connects[PATH_MAX][100] = {};
 
 	FILE *fptr;
 	char c;
+
+	char * buffer;
 
 	char path[PATH_MAX] = "\0";
 	strcat(path, argv[1]);
@@ -81,13 +92,16 @@ int main (int argc, char *argv[]) {
 	int i;
 	
 	for (i = 0; num >= i; i++) {
+    	//printf("%s\n", connects[i]);
 		strcat(connects[i], ".md");
 		int found = listFiles(argv[1], connects[i]);
-		if (found == 0) {
-			char comm[PATH_MAX] = "cd ; touch ";
+		//printf("%c\n",connects[i][strlen(connects[i])-7]);
+		if (found == 0 && connects[i][strlen(connects[i])-7] != '.' && connects[i][strlen(connects[i])-8] != '.' && strcmp(connects[i], ".md") != 0) {
+    		char comm[PATH_MAX] = "cd ; touch '";
 			strcat(comm, argv[1]);
 			strcat(comm, "/");
 			strcat(comm, connects[i]);
+			strcat(comm, "'");
 			system(comm);
 		}
 	}
