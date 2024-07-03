@@ -25,6 +25,8 @@ source ~/.config/kak/plugins/Obsidian-kak/Obsidian-kak.kak do sh%{
 - ```:create-all-mds [FILE]```: this command finds out if all of the links in the given note is a file in the vault, if it is not the file will be created
 	- Example use: ```:create-all-mds 'CookieRecipe.md'```
 - ```:open-obsidian```: opens the currently opened vault in Obsidian
+- ```:note-in-app [FILE]```: opens the given file in the currently opened vault
+	- Example use: ```:note-in-app "CookieRecipe.md"```
 - ```:move-note [FILE] [DIRECTORY]```: Moves the file (given by argument 1) to a directory (given by argument 2)
 	- Example use: ```:move-note 'CookieRecipe.md' 'All Recipes/'```
 
