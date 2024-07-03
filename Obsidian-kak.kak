@@ -56,7 +56,13 @@ define-command -docstring "Open this vault in the Obsidian app" open-obsidian %{
 
 define-command -params 1 -docstring "This command makes all links not yet in the vault into markdown files" create-all-mds  %{
 	evaluate-commands %sh{
-		~/.config/kak/plugins/Obsidian-kak/main $PWD "$1"
+		~/.config/kak/plugins/Obsidian-kak/main "0" $PWD "$1"
+    }
+}
+
+define-command -params 1 -docstring "This command opens a specific MarkDown in the app" note-in-app %{
+	evaluate-commands %sh{
+		~/.config/kak/plugins/Obsidian-kak/main "1" $PWD "$1"
     }
 }
 
@@ -74,3 +80,4 @@ map global user n :change-link-color<ret>
 map global user n :paste-img<ret>
 map global user n :open-obsidian<ret>
 map global user n :quick-switch<ret>
+map global user n :note-in-app<ret>

@@ -47,6 +47,42 @@ int listFiles(char * pth, char *fToFind) {
 	return found;
 }
 
+void open(char * path, char * name) {
+	char command[PATH_MAX] = "xdg-open 'obsidian://vault/";
+
+	char vaultName[PATH_MAX];
+	int i = strlen(path)-1;
+	int j = 0;
+	while (path[i] != '/') {
+		vaultName[j] = path[i];
+		//printf("%c", path[i]);
+		i--;
+		j++;
+	}
+
+	// reverse the string lol
+	i = strlen(vaultName)-1;
+	j = 0;
+	char temp;
+	while (i > j) {
+		temp = vaultName[j];
+		vaultName[j] = vaultName[i];
+		vaultName[i] = temp;
+		//printf("%c %d", vaultName[i], i);
+		i--;
+		j++;
+	}
+
+	char * vName = vaultName;
+	strcat(command, vName);
+	strcat(command, "/");
+	strcat(command, name);
+	strcat(command, "'");
+	//printf("%s\n", command);
+	system(command);
+	
+}
+
 char * slice_str(char *str, char * buffer, int start, int end) {
 	int j = 0;
 	for (int i = start; i <= end && str[i] != '\0'; ++i) {
@@ -58,54 +94,58 @@ char * slice_str(char *str, char * buffer, int start, int end) {
 
 int main (int argc, char *argv[]) {
 
-	char connects[PATH_MAX][100] = {};
+	if (strcmp(argv[1], "0") == 0) {
+		char connects[PATH_MAX][100] = {};
 
-	FILE *fptr;
-	char c;
+		FILE *fptr;
+		char c;
 
-	char * buffer;
+		char * buffer;
 
-	char path[PATH_MAX] = "\0";
-	strcat(path, argv[1]);
-	strcat(path, "/");
-	strcat(path, argv[2]);
-	fptr = fopen(path, "r");
+		char path[PATH_MAX] = "\0";
+		strcat(path, argv[2]);
+		strcat(path, "/");
+		strcat(path, argv[3]);
+		fptr = fopen(path, "r");
 
-	c = fgetc(fptr);
-
-	int num = 0;
-	bool isSaved = false;
-	char last;
-	while (c != EOF) {
-		if (c == '[' && last == '[') {
-			isSaved = true;
-		} else if (isSaved && c == ']') {
-			num++;
-			isSaved = false;
-		} else if (isSaved) {
-			strncat(connects[num], &c, 1);
-		}
-		last = c;
 		c = fgetc(fptr);
-	}
 
-	int i;
-	
-	for (i = 0; num >= i; i++) {
-    	//printf("%s\n", connects[i]);
-		strcat(connects[i], ".md");
-		int found = listFiles(argv[1], connects[i]);
-		//printf("%c\n",connects[i][strlen(connects[i])-7]);
-		if (found == 0 && connects[i][strlen(connects[i])-7] != '.' && connects[i][strlen(connects[i])-8] != '.' && strcmp(connects[i], ".md") != 0) {
-    		char comm[PATH_MAX] = "cd ; touch '";
-			strcat(comm, argv[1]);
-			strcat(comm, "/");
-			strcat(comm, connects[i]);
-			strcat(comm, "'");
-			system(comm);
+		int num = 0;
+		bool isSaved = false;
+		char last;
+		while (c != EOF) {
+			if (c == '[' && last == '[') {
+				isSaved = true;
+			} else if (isSaved && c == ']') {
+				num++;
+				isSaved = false;
+			} else if (isSaved) {
+				strncat(connects[num], &c, 1);
+			}
+			last = c;
+			c = fgetc(fptr);
 		}
-	}
 
+		int i;
+	
+		for (i = 0; num >= i; i++) {
+    		//printf("%s\n", connects[i]);
+			strcat(connects[i], ".md");
+			int found = listFiles(argv[1], connects[i]);
+			//printf("%c\n",connects[i][strlen(connects[i])-7]);
+			if (found == 0 && connects[i][strlen(connects[i])-7] != '.' && connects[i][strlen(connects[i])-8] != '.' && strcmp(connects[i], ".md") != 0) {
+    			char comm[PATH_MAX] = "cd ; touch '";
+				strcat(comm, argv[2]);
+				strcat(comm, "/");
+				strcat(comm, connects[i]);
+				strcat(comm, "'");
+				system(comm);
+			}
+		}
+	
+	} else if (strcmp(argv[1], "1") == 0) {
+		open(argv[2], argv[3]);
+	}
 	//printf("%s\n", connects[0]);
 	
 	
