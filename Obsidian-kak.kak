@@ -41,6 +41,10 @@ define-command -params 1 -docstring "Create new markdown file" open-note %{
 define-command -params 1 -docstring "Paste most recenly saved image to end of the file" paste-img %{
 	evaluate-commands %sh{
 		filepth = "$1"
+		if [ ! -d "assets" ]; then
+			mkdir -p "assets"
+		fi
+		wl-paste > $PWD/assets/$(shuf -i 0-100000000 -n 1).png
 		mostRecentFile = $(ls -t | head -n 1)
 		echo "echo -markup $(ls -t assets | head -n 1)"
 		echo "![[$(ls -t assets | head -n 1)]]">>"$PWD/$1"
