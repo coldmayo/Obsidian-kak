@@ -20,7 +20,7 @@ source ~/.config/kak/plugins/Obsidian-kak/Obsidian-kak.kak do sh%{
 - ```:is-obsidian-vault ```: checks if current directory is an Obsidian vault
 - ```:open-note [TITLE]```: used to create a new note. It has one arguement required, which is the name of the new markdown file (without the .md file extention)
 	- Example use: ```:open-note CookieRecipe```
-- ```:paste-img [FILE]```: puts most recently copied image into the markdown file defined in the arguement. The copied image will be saved to a folder named "assets".
+- ```:paste-img [FILE]```: puts most recently copied image into the markdown file defined in the arguement. The copied image will be saved to a folder named "assets". This is dependant on wl-clipboard.
 	- Example use: ```:paste-img 'CookieRecipe.md'```
 - ```:create-all-mds [FILE]```: this command finds out if all of the links in the given note is a file in the vault, if it is not the file will be created
 	- Example use: ```:create-all-mds 'CookieRecipe.md'```

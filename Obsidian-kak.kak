@@ -6,13 +6,19 @@ face global bracket_highlight pruple
 
 add-highlighter global/ regex \[\[.*?\]\] 0:magenta,black
 
-define-command -params 1 -docstring "Change color of linked files i.e. everything inside double brackets" change-link-color %{
-	evaluate-commands %sh{
+define-command change-link-color -params 1 -docstring %{
+	change-link-color [<color>]: Change the color of the links denoted by double brackets
+
+	colors available: magenta, black, red, blue, white, cyan, yellow
+} %{
+    evaluate-commands %sh{
 		echo "add-highlighter global/ regex \[\[.*?\]\] 0:$1,black"
 	}
 }
 
-define-command -docstring "Is this directory an Obsidian Vault?" is-obsidian-vault %{
+define-command is-obsidian-vault -docstring %{
+	is-obsidian-vault: informs the user weither the directory they are in is an Obsidian Vault
+} %{
 	evaluate-commands %sh{
 		#echo "$PWD
 		filepth = "$PWD/.obsidian/workspace.json"
@@ -24,13 +30,19 @@ define-command -docstring "Is this directory an Obsidian Vault?" is-obsidian-vau
 	}
 }
 
-define-command -docstring "Find Current Directory" current-dir %{
+define-command current-dir -docstring %{
+	current-dir: shows the current directory
+} %{
 	evaluate-commands %sh{
 		echo "echo -markup $(pwd)"
     }
 }
 
-define-command -params 1 -docstring "Create new markdown file" open-note %{
+define-command open-note -params 1 -docstring %{
+	open-note [<name>]: creates a note (MarkDown file) in the vault
+
+	make sure the filename does not contain .md at the end
+} %{
 	evaluate-commands %sh{
 		touch $1.md
 		name = $1
@@ -38,7 +50,11 @@ define-command -params 1 -docstring "Create new markdown file" open-note %{
     }
 }
 
-define-command -params 1 -docstring "Paste most recenly saved image to end of the file" paste-img %{
+define-command paste-img -params 1 -docstring %{
+	paste-img [<filename>]: pastes image saved in the clipboard to the end of the given file
+
+	Dependant on wl-clipboard (working on xclip support)
+} %{
 	evaluate-commands %sh{
 		filepth = "$1"
 		if [ ! -d "assets" ]; then
@@ -51,26 +67,34 @@ define-command -params 1 -docstring "Paste most recenly saved image to end of th
     }
 }
 
-define-command -docstring "Open this vault in the Obsidian app" open-obsidian %{
+define-command open-obsidian -docstring %{
+	open-obsidian: open the Obsidian app with the current vault
+} %{
 	evaluate-commands %sh{
 		vaultName = $(basename "$PWD")
 		xdg-open 'obsidian://open?vault='$vaultName''
-    }
+	}
 }
 
-define-command -params 1 -docstring "This command makes all links not yet in the vault into markdown files" create-all-mds  %{
+define-command create-all-mds -params 1 -docstring %{
+	create-all-mds [<filename>]: All of the linked notes in the given file are created if not already
+} %{
 	evaluate-commands %sh{
 		~/.config/kak/plugins/Obsidian-kak/main "0" $PWD "$1"
     }
 }
 
-define-command -params 1 -docstring "This command opens a specific MarkDown in the app" note-in-app %{
+define-command note-in-app -params 1 -docstring %{
+	note-in-app [<filename>]: opens the given file in the Obsidian app
+} %{
 	evaluate-commands %sh{
 		~/.config/kak/plugins/Obsidian-kak/main "1" $PWD "$1"
     }
 }
 
-define-command -params 2 -docstring "" move-note %{
+define-command move-note -params 2 -docstring %{
+	move-note [<filename>] [<dirname>]: Moves the given file to the given directory
+} %{
 	evaluate-commands %sh{
 		mv "$PWD/$1" "$PWD/$2"
 		echo "echo -markup moved file: $PWD/$1 to $PWD/$2"
