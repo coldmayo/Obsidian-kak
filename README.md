@@ -29,5 +29,6 @@ source ~/.config/kak/plugins/Obsidian-kak/Obsidian-kak.kak do sh%{
 	- Example use: ```:note-in-app "CookieRecipe.md"```
 - ```:move-note [FILE] [DIRECTORY]```: Moves the file (given by argument 1) to a directory (given by argument 2)
 	- Example use: ```:move-note 'CookieRecipe.md' 'All Recipes/'```
-
+- ```:create-table [FILE]```: Creates a table in the given file (argument 1)
+	- Example use: ```:create-table 'CookieRecipie.md'```
 There is more to come, I am not close to being done developing this.

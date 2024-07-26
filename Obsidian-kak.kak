@@ -101,6 +101,14 @@ define-command move-note -params 2 -docstring %{
     }
 }
 
+define-command create-table -params 1 -docstring %{
+	create-table [<filename>]: creates a table in the given file
+} %{
+	evaluate-commands %sh{
+		~/.config/kak/plugins/Obsidian-kak/main "2" $PWD "$1"
+    }
+}
+
 map global user n :is-obsidian-vault<ret>
 map global user n :current-dir<ret>
 map global user n :open-note<ret>
@@ -109,3 +117,4 @@ map global user n :paste-img<ret>
 map global user n :open-obsidian<ret>
 map global user n :quick-switch<ret>
 map global user n :note-in-app<ret>
+map global user m :create-table<ret>

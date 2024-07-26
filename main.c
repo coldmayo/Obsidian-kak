@@ -92,6 +92,25 @@ char * slice_str(char *str, char * buffer, int start, int end) {
 	return buffer;
 }
 
+void make_table(char * path, char * name) {
+	char pth[PATH_MAX];
+	char * table = "| a | b | c |\n| - | - | - |\n";
+	
+	strcat(pth, path);
+	strcat(pth, "/");
+	strcat(pth, name);
+	//printf("%s\n", pth);
+	
+	FILE * file = fopen(pth, "a");
+	if (file == NULL) {
+		//printf("file not found");
+		exit(0);
+	} else {
+		fputs(table, file);
+	}
+	fclose(file);
+}
+
 int main (int argc, char *argv[]) {
 
 	if (strcmp(argv[1], "0") == 0) {
@@ -145,10 +164,9 @@ int main (int argc, char *argv[]) {
 	
 	} else if (strcmp(argv[1], "1") == 0) {
 		open(argv[2], argv[3]);
+	} else if (strcmp(argv[1], "2") == 0) {
+		make_table(argv[2], argv[3]);
 	}
-	//printf("%s\n", connects[0]);
-	
-	
 
 	return 0;
 
