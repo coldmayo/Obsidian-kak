@@ -44,9 +44,9 @@ define-command open-note -params 1 -docstring %{
 	make sure the filename does not contain .md at the end
 } %{
 	evaluate-commands %sh{
-		touch $1.md
-		name = $1
-		echo "edit $1.md"
+		# touch "$1.md"
+		#~/.config/kak/plugins/Obsidian-kak/main "3" $PWD "$1"
+		echo "edit '$1.md'"
     }
 }
 
@@ -67,6 +67,8 @@ define-command paste-img -params 1 -docstring %{
     }
 }
 
+complete-command -menu paste-img buffer
+
 define-command open-obsidian -docstring %{
 	open-obsidian: open the Obsidian app with the current vault
 } %{
@@ -84,6 +86,8 @@ define-command create-all-mds -params 1 -docstring %{
     }
 }
 
+complete-command -menu create-all-mds buffer
+
 define-command note-in-app -params 1 -docstring %{
 	note-in-app [<filename>]: opens the given file in the Obsidian app
 } %{
@@ -91,6 +95,8 @@ define-command note-in-app -params 1 -docstring %{
 		~/.config/kak/plugins/Obsidian-kak/main "1" $PWD "$1"
     }
 }
+
+complete-command -menu note-in-app buffer
 
 define-command move-note -params 2 -docstring %{
 	move-note [<filename>] [<dirname>]: Moves the given file to the given directory
@@ -101,6 +107,8 @@ define-command move-note -params 2 -docstring %{
     }
 }
 
+complete-command -menu move-note buffer
+
 define-command create-table -params 1 -docstring %{
 	create-table [<filename>]: creates a table in the given file
 } %{
@@ -108,6 +116,8 @@ define-command create-table -params 1 -docstring %{
 		~/.config/kak/plugins/Obsidian-kak/main "2" $PWD "$1"
     }
 }
+
+complete-command -menu create-table buffer
 
 map global user n :is-obsidian-vault<ret>
 map global user n :current-dir<ret>

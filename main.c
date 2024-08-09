@@ -166,8 +166,7 @@ int main (int argc, char *argv[]) {
 		open(argv[2], argv[3]);
 	} else if (strcmp(argv[1], "2") == 0) {
 		make_table(argv[2], argv[3]);
-	}
-
+	
 	return 0;
 
 }

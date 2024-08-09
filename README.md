@@ -1,6 +1,6 @@
 # Obsidian-kak
 
-This is a Kakoune plugin for using Obsidian vaults. I want this to be used in a similar way to [obsidian.nvim](https://github.com/epwalsh/obsidian.nvim).
+This is a Kakoune plugin for using Obsidian vaults. I want this to be used in a similar way to [obsidian.nvim](https://github.com/epwalsh/obsidian.nvim). This is a plugin I use personally for my own notetaking. I hope this will be useful to others as well. If you have any suggestions, don't be scared to submit an issue.
 
 ## Installation
 
