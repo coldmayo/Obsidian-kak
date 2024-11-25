@@ -78,7 +78,7 @@ void open(char * path, char * name) {
 	strcat(command, "/");
 	strcat(command, name);
 	strcat(command, "'");
-	//printf("%s\n", command);
+	//printf("echo %s", command);
 	system(command);
 	
 }
@@ -94,7 +94,7 @@ char * slice_str(char *str, char * buffer, int start, int end) {
 
 void make_table(char * path, char * name) {
 	char pth[PATH_MAX];
-	char * table = "| a | b | c |\n| - | - | - |\n";
+	char * table = "| a | b | c |\n| - | - | - |\n| d | e | f |\n";
 	
 	strcat(pth, path);
 	strcat(pth, "/");
@@ -163,10 +163,11 @@ int main (int argc, char *argv[]) {
 		}
 	
 	} else if (strcmp(argv[1], "1") == 0) {
+		//printf("echo %s\n", argv[3]);
 		open(argv[2], argv[3]);
 	} else if (strcmp(argv[1], "2") == 0) {
 		make_table(argv[2], argv[3]);
-	
+	}
 	return 0;
 
 }

@@ -38,7 +38,7 @@ define-command current-dir -docstring %{
     }
 }
 
-define-command open-note -params 1 -docstring %{
+define-command create-note -params 1 -docstring %{
 	open-note [<name>]: creates a note (MarkDown file) in the vault
 
 	make sure the filename does not contain .md at the end
@@ -50,26 +50,31 @@ define-command open-note -params 1 -docstring %{
     }
 }
 
-define-command paste-img -params 1 -docstring %{
+
+define-command paste-img -params 0..1 -docstring %{
 	paste-img [<filename>]: pastes image saved in the clipboard to the end of the given file
 
 	Dependant on wl-clipboard (working on xclip support)
 } %{
 	evaluate-commands %sh{
-		filepth = "$1"
 		if [ ! -d "assets" ]; then
 			mkdir -p "assets"
+		fi
+		if [ "$1" ]; then
+			filepth="$1"
+		else
+			filepth="$kak_bufname"
 		fi
 		wl-paste > $PWD/assets/$(shuf -i 0-100000000 -n 1).png
 		mostRecentFile = $(ls -t | head -n 1)
 		echo "echo -markup $(ls -t assets | head -n 1)"
-		echo "![[$(ls -t assets | head -n 1)]]">>"$PWD/$1"
+		echo "![[$(ls -t assets | head -n 1)]]">>"$PWD/$filepth"
     }
 }
 
 complete-command -menu paste-img buffer
 
-define-command open-obsidian -docstring %{
+define-command open-vault -docstring %{
 	open-obsidian: open the Obsidian app with the current vault
 } %{
 	evaluate-commands %sh{
@@ -88,32 +93,50 @@ define-command create-all-mds -params 1 -docstring %{
 
 complete-command -menu create-all-mds buffer
 
-define-command note-in-app -params 1 -docstring %{
+define-command open-obsidian -params 0..1 -docstring %{
 	note-in-app [<filename>]: opens the given file in the Obsidian app
 } %{
+    
 	evaluate-commands %sh{
-		~/.config/kak/plugins/Obsidian-kak/main "1" $PWD "$1"
-    }
+    	if [ "$1" ]; then
+			~/.config/kak/plugins/Obsidian-kak/main "1" $PWD "$1"
+		else
+            ~/.config/kak/plugins/Obsidian-kak/main "1" "$PWD" "$kak_bufname"
+		fi
+	}
 }
 
-complete-command -menu note-in-app buffer
+complete-command -menu open-obsidian buffer
 
-define-command move-note -params 2 -docstring %{
+define-command move-note -params 1..2 -docstring %{
 	move-note [<filename>] [<dirname>]: Moves the given file to the given directory
 } %{
 	evaluate-commands %sh{
-		mv "$PWD/$1" "$PWD/$2"
-		echo "echo -markup moved file: $PWD/$1 to $PWD/$2"
+    	if [ "$2" ]; then
+    		tomove="$1"
+    		tomove2="$2"
+    	else
+    		tomove="$kak_bufname"
+    		tomove2="$1"
+    	fi
+		mv "$PWD/$tomove" "$PWD/$tomove2"
+		echo "echo -markup moved file: $PWD/$tomove to $PWD/$tomove2"
     }
 }
 
 complete-command -menu move-note buffer
 
-define-command create-table -params 1 -docstring %{
+define-command create-table -params 0..1 -docstring %{
 	create-table [<filename>]: creates a table in the given file
 } %{
+    declare-option str name %val{bufname}
 	evaluate-commands %sh{
-		~/.config/kak/plugins/Obsidian-kak/main "2" $PWD "$1"
+    	if [ -n "$1" ]; then
+			~/.config/kak/plugins/Obsidian-kak/main "2" $PWD "$1"
+		else
+			filename = ""
+			~/.config/kak/plugins/Obsidian-kak/main "2" $PWD "$kak_bufname"
+		fi
     }
 }
 
@@ -121,10 +144,10 @@ complete-command -menu create-table buffer
 
 map global user n :is-obsidian-vault<ret>
 map global user n :current-dir<ret>
-map global user n :open-note<ret>
+map global user n :create-note<ret>
 map global user n :change-link-color<ret>
 map global user n :paste-img<ret>
-map global user n :open-obsidian<ret>
+map global user n :open-vault<ret>
 map global user n :quick-switch<ret>
-map global user n :note-in-app<ret>
+map global user n :open-obsidian<ret>
 map global user m :create-table<ret>
